@@ -99,15 +99,19 @@
                     console.error("User not logged in");
                     return;
                 }
-                db.collection("diary-entries").add({
-                        title: title,
-                        entry: entry,
-                        userId: user.uid
-                }).then((docRef) => {
-                console.log("Document written with ID: ", docRef.id);
-                getEntries();
+                const entriesCollection = collection(db, "diary-entries");
+                const newEntryRef = doc(entriesCollection);
+                const newEntry = {
+                    title: title,
+                    entry: entry,
+                    userId: user.uid,
+                    createdAt: new Date()
+                }
+                addDoc(entriesCollection, newEntry).then((docRef) => {
+                    console.log("Document written with ID: ", docRef.id);
+                    getEntries();
                 }).catch((error) => {
-                console.error("Error adding document: ", error);
+                    console.error("Error adding document: ", error);
                 });
             }
 
