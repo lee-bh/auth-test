@@ -130,9 +130,12 @@
                 const entriesCollection = collection(db, "diary-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
-                
-                entriesSnapshot.forEach(entry => {
-                    console.log(entry.id);
+                const entriesIds = entriesSnapshot.docs.map(doc => doc.id);
+                console.log(entriesIds);
+                const entries = entriesSnapshot.docs.map(doc => doc.data());
+                console.log(entries);
+                entries.forEach(entry => {
+        
                     const entrySection = document.createElement("section");
                     entrySection.classList.add("diary-entry");
                     entrySection.innerHTML = `
