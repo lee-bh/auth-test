@@ -10,6 +10,8 @@
             body, h1, h2, ul, ol, p{font-weight:normal;margin: 0; padding: 0;}
             header, main, footer, #writeForm{width: 550px; margin: 0 auto;}
             header{padding:4rem 0 2rem;}
+            #diary-entry-container{padding:2rem 0;}
+            #diary-entry{padding: 3rem 0;}
             button, input, textarea{line-height: 1.7; font-size: 1rem; font-family: 'Gowun Batang', serif; word-break: keep-all;
             margin-bottom: 1rem;}
             button{padding: 0.1rem 0.5rem;}
@@ -67,9 +69,9 @@
                     signInButton.style.display = "none";
                     signOutButton.style.display = "block";
                 } else {
-                    writeForm.style.display = "block";
+                    writeForm.style.display = "none";
                     signInButton.style.display = "block";
-                    signOutButton.style.display = "block";
+                    signOutButton.style.display = "none";
                 }
             });
 
