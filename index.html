@@ -138,8 +138,8 @@
                     const entrySection = document.createElement("section");
                     entrySection.classList.add("diary-entry");
                     entrySection.innerHTML = `
+                        <p>${entry.createdAt.toDate().toLocaleDateString()}</p>    
                         <h2>${entry.title}</h2>
-                        <p>${entry.createdAt.toDate().toLocaleDateString()}</p>
                         <p>${entry.entry}</p>
                     `;
                     if (user.uid === entry.userId) {
