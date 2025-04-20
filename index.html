@@ -116,6 +116,10 @@
 
             getEntries();
             async function getEntries() {
+                if (!user) {
+                    alert("sign in to save your diary");
+                    return;
+                }
                 const entriesCollection = collection(db, "diary-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
