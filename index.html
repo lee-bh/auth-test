@@ -133,6 +133,7 @@
                 const entries = entriesSnapshot.docs.map(doc => doc.data());
                 console.log(entries);
                 entries.forEach(entry => {  
+                    console.log(this.id);
                     const entrySection = document.createElement("section");
                     entrySection.classList.add("diary-entry");
                     entrySection.innerHTML = `
