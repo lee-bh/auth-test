@@ -57,23 +57,22 @@
             const auth = getAuth(app);
             const provider = new GoogleAuthProvider();
             
-
-            function signIn() {
+            function sIn() {
                 signInWithPopup(auth, provider);
                 signOutButton.style.display = "block";
                 signInButton.style.display = "none";
             }
 
-            function signOut() {
+            function sOut() {
                 signOut(auth);
                 signInButton.style.display = "block";
                 signOutButton.style.display = "none";
             }
 
             const signInButton = document.getElementById("signInButton");
-            signInButton.addEventListener("click", signIn);
+            signInButton.addEventListener("click", sIn);
             const signOutButton = document.getElementById("signOutButton");
-            signOutButton.addEventListener("click", signOut);
+            signOutButton.addEventListener("click", sOut);
 
             
 
