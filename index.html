@@ -141,6 +141,7 @@
                         <p>${entry.createdAt.toDate().toLocaleDateString()}</p>
                         <p>${entry.entry}</p>
                     `;
+                    console.log(entry.id);
                     if (user.uid === entry.userId) {
                         const deleteButton = document.createElement("button");
                         deleteButton.id = "deleteButton";
