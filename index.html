@@ -125,15 +125,8 @@
                 const entriesCollection = collection(db, "diary-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
-                console.log(entriesSnapshot);
-                const entries = entriesSnapshot.docs.map(doc => doc.data());
-                console.log(entries);
-                const user = auth.currentUser;
-                if (!user) {
-                    console.error("User not logged in");
-                    return;
-                }
-                entries.forEach(entry => {
+                
+                entriesSnapshot.forEach(entry => {
                     const entrySection = document.createElement("section");
                     entrySection.classList.add("diary-entry");
                     entrySection.innerHTML = `
@@ -141,7 +134,6 @@
                         <p>${entry.createdAt.toDate().toLocaleDateString()}</p>
                         <p>${entry.entry}</p>
                     `;
-                    console.log(entry.id);
                     if (user.uid === entry.userId) {
                         const deleteButton = document.createElement("button");
                         deleteButton.id = "deleteButton";
