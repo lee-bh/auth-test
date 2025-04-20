@@ -62,7 +62,7 @@
             const writeForm = document.getElementById("writeForm");
             const signInButton = document.getElementById("signInButton");
             const signOutButton = document.getElementById("signOutButton");
-            const deleteButton = document.getElementById("deleteButton");
+          
             // check if user is logged in
             auth.onAuthStateChanged(user => {
                 if (user) {
@@ -121,7 +121,11 @@
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
                 const entries = entriesSnapshot.docs.map(doc => doc.data());
-
+                const user = auth.currentUser;
+                if (!user) {
+                    console.error("User not logged in");
+                    return;
+                }
                 entries.forEach(entry => {
                     const entrySection = document.createElement("section");
                     entrySection.classList.add("diary-entry");
@@ -132,13 +136,17 @@
                         <p>${entry.entry}</p>
                     `;
                     if (user.uid === entry.userId) {
+                        const deleteButton = document.createElement("button");
+                        deleteButton.id = "deleteButton";
+                        deleteButton.textContent = "Delete";
                         entrySection.appendChild(deleteButton);
+                        deleteButton.addEventListener("click", () => deleteEntry(entry.id));
                     }
                     document.getElementById("diary-entry-container").appendChild(entrySection);
                     });
             }   
 
-            deleteButton.addEventListener("click", deleteEntry);
+            
             function deleteEntry(entryId) {
                 const entriesCollection = collection(db, "diary-entries");
                 const entryDoc = doc(entriesCollection, entryId);
