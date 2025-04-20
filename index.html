@@ -97,18 +97,17 @@
                     console.error("User not logged in");
                     return;
                 }
-                try {
-                    addDoc(db.collection("entries"), {
+                db.collection("entries").add({
                         title: title,
                         entry: entry,
                         userId: user.uid
-                    });
-                    getEntries();
-                } catch (error) {
-                    console.error("Error saving entry: ", error);
-                }
+                }).then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+                getEntries();
+                }).catch((error) => {
+                console.error("Error adding document: ", error);
+                });
             }
-
 
             getEntries();
             function getEntries() {
