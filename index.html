@@ -10,6 +10,7 @@
             body, h1, h2, ul, ol, p{font-weight:normal;margin: 0; padding: 0;}
             header, main, footer, #writeForm{width: 550px; margin: 0 auto;}
             header{padding:4rem 0 2rem;}
+            footer{padding-bottom: 50vh;}
             #diary-entry-container{padding:2rem 0;}
             .diary-entry{padding: 3rem 0;}
             .diary-entry p{padding-bottom: 1rem;}
@@ -148,13 +149,13 @@
                     if (user.uid === entry.userId) {
                         const deleteButton = document.createElement("button");
                         deleteButton.id = "deleteButton";
-                        deleteButton.textContent = "Delete";
+                        deleteButton.textContent = "지우기";
                         entrySection.appendChild(deleteButton);
                         deleteButton.addEventListener("click", () => deleteEntry(entriesIds[index]));
 
                         const editButton = document.createElement("button");
                         editButton.id = "editButton";
-                        editButton.textContent = "Edit";
+                        editButton.textContent = "수정하기";
                         entrySection.appendChild(editButton);
                         editButton.addEventListener("click", () => editEntry(entriesIds[index]));
                     }
