@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>My Diary</title>
         <style>
             body {
@@ -31,9 +32,6 @@
             <input type="text" id="diaryTitle" placeholder="Title">
             <textarea id="diaryEntry" placeholder="Write your diary here..."></textarea>
             <button id="saveButton">Save</button>
-        </section>
-        <section id="editForm">
-           
         </section>
         <footer>
             <p>Copyright 2025 My Diary</p>
@@ -172,22 +170,22 @@
                 const entryDoc = doc(entriesCollection, entryId);
                 const entry = await getDoc(entryDoc);
                 const entryData = entry.data();
-                const editForm = document.getElementById("editForm");
-                editForm.style.display = "block";
-                editForm.innerHTML = `
-                    <input type="text" id="editTitle" value="${entryData.title}">
-                    <textarea id="editEntry">${entryData.entry}</textarea>
-                    <button id="saveEditButton">Save</button>
-                `;
-                const saveEditButton = document.getElementById("saveEditButton");
-                saveEditButton.addEventListener("click", () => saveEditedEntry(entryId));
+                
+                const title = document.getElementById("diaryTitle");
+                const entry = document.getElementById("diaryEntry");
+                
+                title.value = entryData.title;
+                entry.value = entryData.entry;
+                const saveButton = document.getElementById("saveButton");
+                saveButton.removeEventListener("click", saveEntry);
+                saveButton.addEventListener("click", () => saveEditedEntry(entryId));
             }
 
             async function saveEditedEntry(entryId) {
                 const entriesCollection = collection(db, "diary-entries");  
                 const entryDoc = doc(entriesCollection, entryId);
-                const title = document.getElementById("editTitle").value;
-                const entry = document.getElementById("editEntry").value;
+                const title = document.getElementById("diaryTitle").value;
+                const entry = document.getElementById("diaryEntry").value;
                 const user = auth.currentUser;
                 if (!user) {
                     console.error("User not logged in");
