@@ -62,19 +62,22 @@
             const signInButton = document.getElementById("signInButton");
             const signOutButton = document.getElementById("signOutButton");
           
+
+            
             // check if user is logged in
             auth.onAuthStateChanged(user => {
                 if (user) {
                     writeForm.style.display = "block";
                     signInButton.style.display = "none";
                     signOutButton.style.display = "block";
+                    getEntries();
                 } else {
                     writeForm.style.display = "none";
                     signInButton.style.display = "block";
                     signOutButton.style.display = "none";
                 }
             });
-
+            
             function sIn() {
                 signInWithPopup(auth, provider)
                 .then(result =>{ getEntries();})
