@@ -139,7 +139,7 @@
                     entrySection.classList.add("diary-entry");
                     entrySection.innerHTML = `
                         <h2>${entry.title}</h2>
-                        <p>${entry.createdAt}</p>
+                        <p>${entry.createdAt.toDate().toLocaleDateString()}</p>
                         <p>${entry.entry}</p>
                     `;
                     if (user.uid === entry.userId) {
