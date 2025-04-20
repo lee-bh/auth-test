@@ -59,31 +59,32 @@
             const db = getFirestore(app);
             const auth = getAuth(app);
             const provider = new GoogleAuthProvider();
-           
+            const writeForm = document.getElementById("writeForm");
+            const signInButton = document.getElementById("signInButton");
+            const signOutButton = document.getElementById("signOutButton");
 
+            // check if user is logged in
             auth.onAuthStateChanged(user => {
                 if (user) {
                     writeForm.style.display = "block";
+                    signInButton.style.display = "none";
+                    signOutButton.style.display = "block";
                 } else {
                     writeForm.style.display = "none";
+                    signInButton.style.display = "block";
+                    signOutButton.style.display = "none";
                 }
             });
 
             function sIn() {
                 signInWithPopup(auth, provider);
-                signOutButton.style.display = "block";
-                signInButton.style.display = "none";
             }
 
             function sOut() {
                 signOut(auth);
-                signInButton.style.display = "block";
-                signOutButton.style.display = "none";
             }
 
-            const signInButton = document.getElementById("signInButton");
             signInButton.addEventListener("click", sIn);
-            const signOutButton = document.getElementById("signOutButton");
             signOutButton.addEventListener("click", sOut);
 
 
@@ -116,10 +117,6 @@
 
             getEntries();
             async function getEntries() {
-                if (!user) {
-                    alert("sign in to save your diary");
-                    return;
-                }
                 const entriesCollection = collection(db, "diary-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
