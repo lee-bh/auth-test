@@ -38,7 +38,7 @@
         <script type="module">
             // Import the functions you need from the SDKs you need
             import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-            import { getFirestore, collection, getDocs, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+            import { getFirestore, collection, getDocs, addDoc, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
             import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
         
             // TODO: Add SDKs for Firebase products that you want to use
@@ -78,6 +78,7 @@
 
             function sIn() {
                 signInWithPopup(auth, provider);
+                getEntries();
             }
 
             function sOut() {
@@ -141,6 +142,11 @@
                         deleteButton.textContent = "Delete";
                         entrySection.appendChild(deleteButton);
                         deleteButton.addEventListener("click", () => deleteEntry(entry.id));
+                        const editButton = document.createElement("button");
+                        editButton.id = "editButton";
+                        editButton.textContent = "Edit";
+                        entrySection.appendChild(editButton);
+                        editButton.addEventListener("click", () => editEntry(entry.id));
                     }
                     document.getElementById("diary-entry-container").appendChild(entrySection);
                     });
@@ -151,9 +157,15 @@
                 const entriesCollection = collection(db, "diary-entries");
                 const entryDoc = doc(entriesCollection, entryId);
                 deleteDoc(entryDoc);
+                getEntries();
             }
 
-            
+            function editEntry(entryId) {
+                const entriesCollection = collection(db, "diary-entries");
+                const entryDoc = doc(entriesCollection, entryId);
+                const entry = await getDoc(entryDoc);
+                console.log(entry.data());
+            }
 
           </script>
     </body>
