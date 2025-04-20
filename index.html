@@ -1,6 +1,19 @@
 <html>
     <head>
         <title>My Diary</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            #signInButton {
+                display: block;
+            }
+            #signOutButton {
+                display: none;
+            }
+        </style>
     </head>
     <body>
         <header></header>
@@ -44,10 +57,17 @@
             const auth = getAuth(app);
             const provider = new GoogleAuthProvider();
             
-            
 
             function signIn() {
                 signInWithPopup(auth, provider);
+                signOutButton.style.display = "block";
+                signInButton.style.display = "none";
+            }
+
+            function signOut() {
+                signOut(auth);
+                signInButton.style.display = "block";
+                signOutButton.style.display = "none";
             }
 
             const signInButton = document.getElementById("signInButton");
