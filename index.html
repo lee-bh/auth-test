@@ -74,12 +74,15 @@
             });
 
             function sIn() {
-                signInWithPopup(auth, provider);
+                signInWithPopup(auth, provider)
+                .then(result =>{ getEntries();})
+                .catch(error =>{console.log('error')});
             }
 
             function sOut() {
-                signOut(auth);
-                document.getElementById("diary-entry-container").innerHTML = "";
+                signOut(auth).then(()=>{document.getElementById("diary-entry-container").innerHTML = "";})
+                .catch(error =>{console.log('error')});
+                
             }
 
             signInButton.addEventListener("click", sIn);
