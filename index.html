@@ -6,6 +6,7 @@
         <header></header>
             <h1>My Diary</h1>
             <button id="signInButton">Sign In</button>
+            <button id="signOutButton">Sign Out</button>
         </header>
         <section class="diary-entry">
             <h2>Today</h2>
@@ -21,6 +22,9 @@
         <script type="module">
             // Import the functions you need from the SDKs you need
             import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+            import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+            import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
             // TODO: Add SDKs for Firebase products that you want to use
             // https://firebase.google.com/docs/web/setup#available-libraries
           
@@ -39,11 +43,21 @@
             const db = getFirestore(app);
             const auth = getAuth(app);
             const provider = new GoogleAuthProvider();
-            const signInWithPopup = async () => {
-                const result = await signInWithPopup(auth, provider);
-                console.log(result);
+            
+            
+
+            function signIn() {
+                signInWithPopup(auth, provider);
             }
+
             const signInButton = document.getElementById("signInButton");
-            signInButton.addEventListener("click", signInWithPopup);
+            signInButton.addEventListener("click", signIn);
+            const signOutButton = document.getElementById("signOutButton");
+            signOutButton.addEventListener("click", signOut);
+
+            
+
+            
+
           </script>
     </body>
