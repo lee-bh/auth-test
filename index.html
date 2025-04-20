@@ -40,7 +40,7 @@
             import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
             import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
             import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-            import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+        
             // TODO: Add SDKs for Firebase products that you want to use
             // https://firebase.google.com/docs/web/setup#available-libraries
           
@@ -59,7 +59,8 @@
             const db = getFirestore(app);
             const auth = getAuth(app);
             const provider = new GoogleAuthProvider();
-            
+           
+
             auth.onAuthStateChanged(user => {
                 if (user) {
                     writeForm.style.display = "block";
@@ -84,6 +85,7 @@
             signInButton.addEventListener("click", sIn);
             const signOutButton = document.getElementById("signOutButton");
             signOutButton.addEventListener("click", sOut);
+
 
             const saveButton = document.getElementById("saveButton");
             saveButton.addEventListener("click", saveEntry);
@@ -111,7 +113,12 @@
 
             getEntries();
             function getEntries() {
-                const entries = db.collection("entries").get();
+                const entriesCollection = collection(db, "entries");
+                const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
+                const entriesSnapshot = await getDocs(entriesQuery);
+                const entries = entriesSnapshot.docs.map(doc => doc.data());
+                console.log(entries);
+
                 entries.forEach(entry => {
                     entry.forEach(e => {
                         const entrySection = document.createElement("section");
