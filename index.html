@@ -172,10 +172,10 @@
                 const entryData = entry.data();
                 
                 const title = document.getElementById("diaryTitle");
-                const entry = document.getElementById("diaryEntry");
+                const entryTextarea = document.getElementById("diaryEntry");
                 
                 title.value = entryData.title;
-                entry.value = entryData.entry;
+                entryTextarea.value = entryData.entry;
                 const saveButton = document.getElementById("saveButton");
                 saveButton.removeEventListener("click", saveEntry);
                 saveButton.addEventListener("click", () => saveEditedEntry(entryId));
