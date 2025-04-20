@@ -26,7 +26,6 @@
             <button id="signOutButton">Sign Out</button>
         </header>
         <main id="diary-entry-container">
-
         </main>
         <section id="writeForm">
             <input type="text" id="diaryTitle" placeholder="Title">
@@ -113,9 +112,7 @@
                 }).catch((error) => {
                     console.error("Error adding document: ", error);
                 });
-            }
-
-       
+            }   
             async function getEntries() {
                 const entriesContainer = document.getElementById("diary-entry-container");
                 entriesContainer.innerHTML = "";
@@ -156,8 +153,7 @@
                     document.getElementById("diary-entry-container").appendChild(entrySection);
                     });
             }   
-
-            
+       
             async function deleteEntry(entryId) {
                 const entriesCollection = collection(db, "diary-entries");
                 const entryDoc = doc(entriesCollection, entryId);
