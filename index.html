@@ -131,10 +131,10 @@
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
                 const entriesIds = entriesSnapshot.docs.map(doc => doc.id);
-                console.log(entriesIds);
+                
                 const entries = entriesSnapshot.docs.map(doc => doc.data());
                 console.log(entries);
-                entries.forEach(entry => {
+                entries.forEach((entry, index) => {
         
                     const entrySection = document.createElement("section");
                     entrySection.classList.add("diary-entry");
@@ -148,13 +148,13 @@
                         deleteButton.id = "deleteButton";
                         deleteButton.textContent = "Delete";
                         entrySection.appendChild(deleteButton);
-                        deleteButton.addEventListener("click", () => deleteEntry(entry.id));
+                        deleteButton.addEventListener("click", () => deleteEntry(entriesIds[index]));
 
                         const editButton = document.createElement("button");
                         editButton.id = "editButton";
                         editButton.textContent = "Edit";
                         entrySection.appendChild(editButton);
-                        editButton.addEventListener("click", () => editEntry(entry.id));
+                        editButton.addEventListener("click", () => editEntry(entriesIds[index]));
                     }
                     document.getElementById("diary-entry-container").appendChild(entrySection);
                     });
