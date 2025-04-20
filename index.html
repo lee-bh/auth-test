@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>My Diary</title>
+    </head>
+    <body>
+        <header></header>
+            <h1>My Diary</h1>
+            <button id="signInButton">Sign In</button>
+        </header>
+        <section class="diary-entry">
+            <h2>Today</h2>
+            <p>Today is a good day.</p>
+        </section>
+        <section class="diary-entry">
+            <h2>Yesterday</h2>
+            <p>Yesterday was a good day.</p>
+        </section>
+        <footer>
+            <p>Copyright 2025 My Diary</p>
+        </footer>
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+              apiKey: "AIzaSyBE8Mt6sAgO30wUXmuaNfFP0YEuLCs3rJE",
+              authDomain: "auth-test-b35cf.firebaseapp.com",
+              projectId: "auth-test-b35cf",
+              storageBucket: "auth-test-b35cf.firebasestorage.app",
+              messagingSenderId: "798896697380",
+              appId: "1:798896697380:web:0a207a3eb11c6be93be8b1"
+            };
+          
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const auth = getAuth(app);
+            const provider = new GoogleAuthProvider();
+            const signInWithPopup = async () => {
+                const result = await signInWithPopup(auth, provider);
+                console.log(result);
+            }
+            const signInButton = document.getElementById("signInButton");
+            signInButton.addEventListener("click", signInWithPopup);
+          </script>
+    </body>
