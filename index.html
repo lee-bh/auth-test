@@ -153,14 +153,14 @@
             }   
 
             
-            function deleteEntry(entryId) {
+            async function deleteEntry(entryId) {
                 const entriesCollection = collection(db, "diary-entries");
                 const entryDoc = doc(entriesCollection, entryId);
                 deleteDoc(entryDoc);
                 getEntries();
             }
 
-            function editEntry(entryId) {
+            async function editEntry(entryId) {
                 const entriesCollection = collection(db, "diary-entries");
                 const entryDoc = doc(entriesCollection, entryId);
                 const entry = await getDoc(entryDoc);
