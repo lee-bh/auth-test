@@ -72,7 +72,6 @@
                     writeForm.style.display = "block";
                     signInButton.style.display = "none";
                     signOutButton.style.display = "block";
-                    getEntries();
                 } else {
                     writeForm.style.display = "none";
                     signInButton.style.display = "block";
@@ -82,7 +81,6 @@
 
             function sIn() {
                 signInWithPopup(auth, provider);
-                getEntries();
             }
 
             function sOut() {
@@ -93,12 +91,10 @@
             signInButton.addEventListener("click", sIn);
             signOutButton.addEventListener("click", sOut);
 
-
             const saveButton = document.getElementById("saveButton");
             saveButton.addEventListener("click", saveEntry);
 
-            function saveEntry() {
-                
+            function saveEntry() {               
                 const title = document.getElementById("diaryTitle").value;
                 const entry = document.getElementById("diaryEntry").value;
                 const user = auth.currentUser;
@@ -121,6 +117,7 @@
                 });
             }
 
+       
             async function getEntries() {
                 const user = auth.currentUser;
                 if (!user) {
@@ -130,10 +127,12 @@
                 const entriesCollection = collection(db, "diary-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
+                const entriesIds = entriesSnapshot.docs.map(doc => doc.id);
+                
                 const entries = entriesSnapshot.docs.map(doc => doc.data());
                 console.log(entries);
-                entries.forEach(entry => {  
-                    console.log(this.id);
+                entries.forEach((entry, index) => {
+        
                     const entrySection = document.createElement("section");
                     entrySection.classList.add("diary-entry");
                     entrySection.innerHTML = `
@@ -146,13 +145,13 @@
                         deleteButton.id = "deleteButton";
                         deleteButton.textContent = "Delete";
                         entrySection.appendChild(deleteButton);
-                        deleteButton.addEventListener("click", () => deleteEntry(this.id));
+                        deleteButton.addEventListener("click", () => deleteEntry(entriesIds[index]));
 
                         const editButton = document.createElement("button");
                         editButton.id = "editButton";
                         editButton.textContent = "Edit";
                         entrySection.appendChild(editButton);
-                        editButton.addEventListener("click", () => editEntry(this.id));
+                        editButton.addEventListener("click", () => editEntry(entriesIds[index]));
                     }
                     document.getElementById("diary-entry-container").appendChild(entrySection);
                     });
