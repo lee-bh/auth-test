@@ -21,13 +21,13 @@
             <button id="signInButton">Sign In</button>
             <button id="signOutButton">Sign Out</button>
         </header>
-        <section class="diary-entry">
-            <h2>Today</h2>
-            <p>Today is a good day.</p>
-        </section>
-        <section class="diary-entry">
-            <h2>Yesterday</h2>
-            <p>Yesterday was a good day.</p>
+        <main id="diary-entry-container">
+
+        </main>
+        <section class="writeForm">
+            <input type="text" id="diaryTitle" placeholder="Title">
+            <textarea id="diaryEntry" placeholder="Write your diary here..."></textarea>
+            <button id="saveButton">Save</button>
         </section>
         <footer>
             <p>Copyright 2025 My Diary</p>
@@ -74,9 +74,39 @@
             const signOutButton = document.getElementById("signOutButton");
             signOutButton.addEventListener("click", sOut);
 
-            
+            const saveButton = document.getElementById("saveButton");
+            saveButton.addEventListener("click", saveEntry);
 
-            
+            function saveEntry() {
+                const title = document.getElementById("diaryTitle").value;
+                const entry = document.getElementById("diaryEntry").value;
+                try {
+                    db.collection("entries").add({
+                        title: title,
+                        entry: entry
+                    });
+                    getEntries();
+                } catch (error) {
+                    console.error("Error saving entry: ", error);
+                }
+            }
+
+
+            getEntries();
+            function getEntries() {
+                const entries = db.collection("entries").get();
+                entries.forEach(entry => {
+                    entry.forEach(e => {
+                        const entrySection = document.createElement("section");
+                        entrySection.classList.add("diary-entry");
+                        entrySection.innerHTML = `
+                            <h2>${e.data().title}</h2>
+                            <p>${e.data().entry}</p>
+                        `;
+                        document.getElementById("diary-entry-container").appendChild(entrySection);
+                    });
+                });
+            }   
 
           </script>
     </body>
