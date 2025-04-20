@@ -125,6 +125,7 @@
                 const entriesCollection = collection(db, "diary-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
+                console.log(entriesSnapshot);
                 const entries = entriesSnapshot.docs.map(doc => doc.data());
                 console.log(entries);
                 const user = auth.currentUser;
