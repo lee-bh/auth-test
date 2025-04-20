@@ -122,6 +122,11 @@
 
             getEntries();
             async function getEntries() {
+                const user = auth.currentUser;
+                if (!user) {
+                    console.error("User not logged in");
+                    return;
+                }
                 const entriesCollection = collection(db, "diary-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
