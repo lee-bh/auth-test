@@ -148,13 +148,13 @@
                         deleteButton.id = "deleteButton";
                         deleteButton.textContent = "Delete";
                         entrySection.appendChild(deleteButton);
-                        deleteButton.addEventListener("click", () => deleteEntry(entriesIds[index]));
+                        deleteButton.addEventListener("click", () => deleteEntry(this.id));
 
                         const editButton = document.createElement("button");
                         editButton.id = "editButton";
                         editButton.textContent = "Edit";
                         entrySection.appendChild(editButton);
-                        editButton.addEventListener("click", () => editEntry(entriesIds[index]));
+                        editButton.addEventListener("click", () => editEntry(this.id));
                     }
                     document.getElementById("diary-entry-container").appendChild(entrySection);
                     });
