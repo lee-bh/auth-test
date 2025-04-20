@@ -99,7 +99,7 @@
                     console.error("User not logged in");
                     return;
                 }
-                db.collection("entries").add({
+                db.collection("diary-entries").add({
                         title: title,
                         entry: entry,
                         userId: user.uid
@@ -112,23 +112,21 @@
             }
 
             getEntries();
-            function getEntries() {
-                const entriesCollection = collection(db, "entries");
+            async function getEntries() {
+                const entriesCollection = collection(db, "diary-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
                 const entries = entriesSnapshot.docs.map(doc => doc.data());
 
                 entries.forEach(entry => {
-                    entry.forEach(e => {
-                        const entrySection = document.createElement("section");
-                        entrySection.classList.add("diary-entry");
-                        entrySection.innerHTML = `
-                            <h2>${e.data().title}</h2>
-                            <p>${e.data().entry}</p>
-                        `;
-                        document.getElementById("diary-entry-container").appendChild(entrySection);
+                    const entrySection = document.createElement("section");
+                    entrySection.classList.add("diary-entry");
+                    entrySection.innerHTML = `
+                        <h2>${entry.title}</h2>
+                        <p>${entry.entry}</p>
+                    `;
+                    document.getElementById("diary-entry-container").appendChild(entrySection);
                     });
-                });
             }   
 
           </script>
