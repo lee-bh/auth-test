@@ -72,6 +72,7 @@
                     writeForm.style.display = "block";
                     signInButton.style.display = "none";
                     signOutButton.style.display = "block";
+                    getEntries();
                 } else {
                     writeForm.style.display = "none";
                     signInButton.style.display = "block";
@@ -130,12 +131,9 @@
                 const entriesCollection = collection(db, "diary-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
-                const entriesIds = entriesSnapshot.docs.map(doc => doc.id);
-                
                 const entries = entriesSnapshot.docs.map(doc => doc.data());
                 console.log(entries);
-                entries.forEach((entry, index) => {
-        
+                entries.forEach(entry => {  
                     const entrySection = document.createElement("section");
                     entrySection.classList.add("diary-entry");
                     entrySection.innerHTML = `
