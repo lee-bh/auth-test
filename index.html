@@ -62,7 +62,7 @@
             const writeForm = document.getElementById("writeForm");
             const signInButton = document.getElementById("signInButton");
             const signOutButton = document.getElementById("signOutButton");
-
+            const deleteButton = document.getElementById("deleteButton");
             // check if user is logged in
             auth.onAuthStateChanged(user => {
                 if (user) {
@@ -127,11 +127,25 @@
                     entrySection.classList.add("diary-entry");
                     entrySection.innerHTML = `
                         <h2>${entry.title}</h2>
+                        <p>${entry.createdAt.toDate().toLocaleDateString()}</p>
+                        <p>${entry.userId}</p>
                         <p>${entry.entry}</p>
                     `;
+                    if (user.uid === entry.userId) {
+                        entrySection.appendChild(deleteButton);
+                    }
                     document.getElementById("diary-entry-container").appendChild(entrySection);
                     });
             }   
+
+            deleteButton.addEventListener("click", deleteEntry);
+            function deleteEntry(entryId) {
+                const entriesCollection = collection(db, "diary-entries");
+                const entryDoc = doc(entriesCollection, entryId);
+                deleteDoc(entryDoc);
+            }
+
+            
 
           </script>
     </body>
