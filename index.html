@@ -140,6 +140,7 @@
                         <p>${entry.entry}</p>
                     `;
                     if (user.uid === entry.userId) {
+                        console.log(entry.id);
                         const deleteButton = document.createElement("button");
                         deleteButton.id = "deleteButton";
                         deleteButton.textContent = "Delete";
