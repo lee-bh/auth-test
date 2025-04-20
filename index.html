@@ -38,7 +38,7 @@
         <script type="module">
             // Import the functions you need from the SDKs you need
             import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-            import { getFirestore, collection, getDocs, addDoc, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+            import { getFirestore, collection, getDocs, addDoc, query, orderBy, deleteDoc, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
             import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
         
             // TODO: Add SDKs for Firebase products that you want to use
@@ -83,6 +83,7 @@
 
             function sOut() {
                 signOut(auth);
+                document.getElementById("diary-entry-container").innerHTML = "";
             }
 
             signInButton.addEventListener("click", sIn);
@@ -133,7 +134,6 @@
                     entrySection.innerHTML = `
                         <h2>${entry.title}</h2>
                         <p>${entry.createdAt.toDate().toLocaleDateString()}</p>
-                        <p>${entry.userId}</p>
                         <p>${entry.entry}</p>
                     `;
                     if (user.uid === entry.userId) {
@@ -164,8 +164,37 @@
                 const entriesCollection = collection(db, "diary-entries");
                 const entryDoc = doc(entriesCollection, entryId);
                 const entry = await getDoc(entryDoc);
-                console.log(entry.data());
+                const entryData = entry.data();
+                const editForm = document.getElementById("editForm");
+                editForm.style.display = "block";
+                editForm.innerHTML = `
+                    <input type="text" id="editTitle" value="${entryData.title}">
+                    <textarea id="editEntry">${entryData.entry}</textarea>
+                    <button id="saveEditButton">Save</button>
+                `;
+                const saveEditButton = document.getElementById("saveEditButton");
+                saveEditButton.addEventListener("click", () => saveEditedEntry(entryId));
             }
 
+            async function saveEditedEntry(entryId) {
+                const entriesCollection = collection(db, "diary-entries");  
+                const entryDoc = doc(entriesCollection, entryId);
+                const title = document.getElementById("editTitle").value;
+                const entry = document.getElementById("editEntry").value;
+                const user = auth.currentUser;
+                if (!user) {
+                    console.error("User not logged in");
+                    return;
+                }
+                const newEntry = {
+                    title: title,
+                    entry: entry,
+                    userId: user.uid,
+                    createdAt: new Date()
+                }
+                updateDoc(entryDoc, newEntry);
+                getEntries();
+                editForm.style.display = "none";
+            }
           </script>
     </body>
