@@ -12,24 +12,24 @@
             header, main, footer, #writeForm{width: 550px; margin: 0 auto;}
             header{padding:4rem 0 2rem;}
             footer{padding-bottom: 50vh;}
-            #diary-entry-container{padding:2rem 0rem;}
-            .diary-entry{padding: 3rem 0;}
-            .diary-entry p{padding-bottom: 1rem; word-spacing: -0.1rem;}
-            h2, #diaryTitle{font-size: 1.5rem;}
+            #verse-entry-container{padding:2rem 0rem;}
+            .verse-entry{padding: 3rem 0;}
+            .verse-entry p{padding-bottom: 1rem; word-spacing: -0.1rem;}
+            h2, #verseTitle{font-size: 1.5rem;}
             button, input, textarea{line-height: 1.7; font-size: 1rem; font-family: 'Gowun Batang', serif; 
             word-break: keep-all; border:none; background:var(--color-point); outline:none;}
             button:hover{background:black; color:white;}
             button{padding: 0.1rem 0.5rem;margin-right: 0.5rem;}
             #writeForm { position: fixed;left: calc(50% - 275px - 1rem); bottom: 0;
             padding-bottom:1rem; width: calc(550px + 2rem);}
-            #diaryTitle,#diaryEntry {border:none; background:var(--color-point); width: 100%; padding:1rem;}
-            #diaryTitle{padding-bottom:0;}
-            #diaryEntry{height:12rem;word-spacing: -0.1rem;padding-top:0}
+            #verseTitle,#verseEntry {border:none; background:var(--color-point); width: 100%; padding:1rem;}
+            #verseTitle{padding-bottom:0;}
+            #verseEntry{height:12rem;word-spacing: -0.1rem;padding-top:0}
             #saveButton{position: absolute; right: 1rem; bottom: 2rem;}
 
             @media (max-width: 550px) {
                 header, main, footer, #writeForm { width: 100vw;}
-                #diaryTitle,#diaryEntry { padding: 1rem; }
+                #verseTitle,#verseEntry { padding: 1rem; }
                 #saveButton { position: relative; }
             }
             
@@ -41,11 +41,11 @@
             <button id="signInButton">로그인</button>
             <button id="signOutButton">로그아웃</button>
         </header>
-        <main id="diary-entry-container">
+        <main id="verse-entry-container">
         </main>
         <section id="writeForm">
-            <input type="text" id="diaryTitle" placeholder="제목">
-            <textarea id="diaryEntry" placeholder="일기를 작성해주세요"></textarea>
+            <input type="text" id="verseTitle" placeholder="제목">
+            <textarea id="verseEntry" placeholder="일기를 작성해주세요"></textarea>
             <button id="saveButton">저장하기</button>
         </section>
         <footer>
@@ -96,7 +96,7 @@
             }
 
             function sOut() {
-                signOut(auth).then(()=>{document.getElementById("diary-entry-container").innerHTML = "";})
+                signOut(auth).then(()=>{document.getElementById("verse-entry-container").innerHTML = "";})
                 .catch(error =>{console.log('error')});
             }
 
@@ -107,14 +107,14 @@
             saveButton.addEventListener("click", saveEntry);
 
             function saveEntry() {               
-                const title = document.getElementById("diaryTitle").value;
-                const entry = document.getElementById("diaryEntry").value;
+                const title = document.getElementById("verseTitle").value;
+                const entry = document.getElementById("verseEntry").value;
                 const user = auth.currentUser;
                 if (!user) {
                     console.error("User not logged in");
                     return;
                 }
-                const entriesCollection = collection(db, "diary-entries");
+                const entriesCollection = collection(db, "verse-entries");
                 const newEntry = {
                     title: title,
                     entry: entry,
@@ -129,14 +129,14 @@
                 });
             }   
             async function getEntries() {
-                const entriesContainer = document.getElementById("diary-entry-container");
+                const entriesContainer = document.getElementById("verse-entry-container");
                 entriesContainer.innerHTML = "";
                 const user = auth.currentUser;
                 if (!user) {
                     console.error("User not logged in");
                     return;
                 }
-                const entriesCollection = collection(db, "diary-entries");
+                const entriesCollection = collection(db, "verse-entries");
                 const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
                 const entriesSnapshot = await getDocs(entriesQuery);
                 const entriesIds = entriesSnapshot.docs.map(doc => doc.id);
@@ -146,7 +146,7 @@
                 entries.forEach((entry, index) => {
         
                     const entrySection = document.createElement("section");
-                    entrySection.classList.add("diary-entry");
+                    entrySection.classList.add("verse-entry");
                     entrySection.innerHTML = `
                         <p>${entry.createdAt.toDate().toLocaleDateString()}</p>    
                         <h2>${entry.title}</h2>
@@ -165,25 +165,25 @@
                         entrySection.appendChild(editButton);
                         editButton.addEventListener("click", () => editEntry(entriesIds[index]));
                     }
-                    document.getElementById("diary-entry-container").appendChild(entrySection);
+                    document.getElementById("verse-entry-container").appendChild(entrySection);
                     });
             }   
  
             async function deleteEntry(entryId) {
-                const entriesCollection = collection(db, "diary-entries");
+                const entriesCollection = collection(db, "verse-entries");
                 const entryDoc = doc(entriesCollection, entryId);
                 deleteDoc(entryDoc);
                 getEntries();
             }
 
             async function editEntry(entryId) {
-                const entriesCollection = collection(db, "diary-entries");
+                const entriesCollection = collection(db, "verse-entries");
                 const entryDoc = doc(entriesCollection, entryId);
                 const entry = await getDoc(entryDoc);
                 const entryData = entry.data();
                 
-                const title = document.getElementById("diaryTitle");
-                const entryTextarea = document.getElementById("diaryEntry");
+                const title = document.getElementById("verseTitle");
+                const entryTextarea = document.getElementById("verseEntry");
                 
                 title.value = entryData.title;
                 entryTextarea.value = entryData.entry;
@@ -193,10 +193,10 @@
             }
 
             async function saveEditedEntry(entryId) {
-                const entriesCollection = collection(db, "diary-entries");  
+                const entriesCollection = collection(db, "verse-entries");  
                 const entryDoc = doc(entriesCollection, entryId);
-                const title = document.getElementById("diaryTitle").value;
-                const entry = document.getElementById("diaryEntry").value;
+                const title = document.getElementById("verseTitle").value;
+                const entry = document.getElementById("verseEntry").value;
                 const user = auth.currentUser;
                 if (!user) {
                     console.error("User not logged in");
